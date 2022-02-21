@@ -3,7 +3,7 @@
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return (min < max && min >= 0) ? Math.floor(Math.random() * (max - min + 1)) + min : 'Диапазон задан неверно';
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 getRandomIntInclusive();
