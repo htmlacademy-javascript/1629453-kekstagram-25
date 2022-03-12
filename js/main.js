@@ -106,4 +106,4 @@ function createPhotoList() {
   return photoList;
 }
 
-console.log(createPhotoList());
+checkStringLength();
