@@ -1,36 +1,3 @@
-// Источник: https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-
-function getRandomIntInclusive(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-getRandomIntInclusive();
-
-function isCommentMaxLengthExceeded(comment, maxLength) {
-  return comment.length <= maxLength;
-}
-
-isCommentMaxLengthExceeded();
-// Функция взята из интернета и доработана
-// Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
-
-function getRandomPositiveInteger(x, y) {
-  const lower = Math.ceil(Math.min(Math.abs(x), Math.abs(y)));
-  const upper = Math.floor(Math.max(Math.abs(x), Math.abs(y)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-}
-
-getRandomPositiveInteger();
-
-function checkStringLength(string, length) {
-  return string.length <= length;
-}
-
-checkStringLength('Привет, мир!', 200);
-
 const PHOTO_DESCRIPTIONS = [
   'Он любил гулять, прохаживаясь по набережной.',
   'Изучая историю, мы глубже понимаем свою страну.',
@@ -81,56 +48,62 @@ const NAMES = [
 const PHOTO_ITEM_QUANTITY = 25;
 const COMMENT_ITEM_QUANTITY = 6;
 
-const createCommentItem = () => {
-  const commentItem = {
-    id: '',
+
+function getRandomPositiveInteger(x, y) {
+  const lower = Math.ceil(Math.min(Math.abs(x), Math.abs(y)));
+  const upper = Math.floor(Math.max(Math.abs(x), Math.abs(y)));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
+}
+
+function checkStringLength(string, length) {
+  return string.length <= length;
+}
+
+
+function createPhotoList() {
+  const createCommentItem = () => ({
     avatar: `img/avatar-${getRandomPositiveInteger(1, 6)}.svg`,
     message: COMMENTS[getRandomPositiveInteger(0, COMMENTS.length - 1)],
     name: NAMES[getRandomPositiveInteger(0, NAMES.length - 1)],
-  };
-  return commentItem;
-};
+  });
 
-const comments = Array.from({ length: COMMENT_ITEM_QUANTITY }, createCommentItem);
-comments.forEach(() => {
-  const count = comments.length;
-  const range = 1000;
-  const m = {};
-  const a = [];
+  const comments = Array.from({ length: COMMENT_ITEM_QUANTITY }, createCommentItem);
 
-  for (let i = 0; i < count; ++i) {
-    const r = Math.floor(Math.random() * (range - i));
-    a.push(((r in m) ? m[r] : r) + 1);
-    const l = range - i - 1;
-    m[r] = (l in m) ? m[l] : l;
-  }
+  comments.forEach(() => {
+    // Создает массив из уникальных случайных чисел и присваивает ID.
+    const count = COMMENT_ITEM_QUANTITY;
+    const range = 1000;
+    const m = {};
+    const a = [];
 
-  for (let j = 0; j <= comments.length - 1; j++) {
-    comments[j].id = a[j];
-  }
-}
-);
+    for (let i = 0; i < count; ++i) {
+      const r = Math.floor(Math.random() * (range - i));
+      a.push(((r in m) ? m[r] : r) + 1);
+      const l = range - i - 1;
+      m[r] = (l in m) ? m[l] : l;
+    }
 
-const createPhotoItem = () => {
-  const photoItem = {
-    id: '',
-    url: '',
-    description: '',
+    for (let j = 0; j <= comments.length - 1; j++) {
+      comments[j].id = a[j];
+    }
+  });
+
+  const createPhotoItem = () => ({
     likes: getRandomPositiveInteger(0, 200),
     comments: comments,
-  };
-  return photoItem;
-};
+  });
 
-const photoList = Array.from({ length: PHOTO_ITEM_QUANTITY }, createPhotoItem);
+  const photoList = Array.from({ length: PHOTO_ITEM_QUANTITY }, createPhotoItem);
 
-photoList.forEach((currentElement, index) => {
-  currentElement.id = index + 1;
-  currentElement.url = `photos/${index + 1}.jpg`;
-  currentElement.description = PHOTO_DESCRIPTIONS[index];
+  photoList.forEach((currentElement, index) => {
+    currentElement.id = index + 1;
+    currentElement.url = `photos/${index + 1}.jpg`;
+    currentElement.description = PHOTO_DESCRIPTIONS[index];
+  }
+  );
+
+  return photoList;
 }
-);
 
-createCommentItem();
-createPhotoItem();
-
+console.log(createPhotoList());
