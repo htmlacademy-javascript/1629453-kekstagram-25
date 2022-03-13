@@ -6,6 +6,5 @@ const getRandomPositiveInteger = (x, y) => {
 };
 
 const checkStringLength = (string, length) => string.length <= length;
-checkStringLength('Hello, world!', 200);
 
-export {getRandomPositiveInteger};
+export {getRandomPositiveInteger, checkStringLength};
